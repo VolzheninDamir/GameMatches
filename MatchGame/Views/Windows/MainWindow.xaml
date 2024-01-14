@@ -1,0 +1,99 @@
+﻿<Window x:Class="MatchGame.Views.Windows.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MatchGame"
+        xmlns:c="clr-namespace:MatchGame.Commands"
+        xmlns:vm="clr-namespace:MatchGame.ViewModels"
+        xmlns:conv="clr-namespace:MatchGame.Converters"
+        mc:Ignorable="d"
+        Icon="../../Images/logo.png"
+        d:DesignHeight="500"
+        MinWidth="860"
+        MinHeight="330"
+        Title="MatchGame" d:DesignWidth="1025">
+
+
+    <Window.Resources>
+        <vm:GameViewModel x:Key="gvm"/>
+        <c:FieldClickCommand x:Key="fcc"/>
+        <conv:MultiValueConverter x:Key="mvc"/>
+        <c:AcceptCommand x:Key="ac"/>
+        <c:ResetCommand x:Key="res"/>
+        <c:RulesCommand x:Key="rul"/>
+        <c:SaveCommand x:Key="sav"/>
+        <c:DownloadCommand x:Key="dow"/>
+        <DataTemplate x:Key="OneButton">
+            <Button Command="{StaticResource fcc}" Margin="0" Width="20">
+                <Image Source="{Binding Image}"/>
+                <Button.CommandParameter>
+                    <MultiBinding Converter="{StaticResource mvc}">
+                        <Binding/>
+                        <Binding Source="{StaticResource gvm}"/>
+                    </MultiBinding>
+                </Button.CommandParameter>
+            </Button>
+        </DataTemplate>
+
+        <DataTemplate x:Key="OneButtonNc">
+            <Button Margin="0" Width="20">
+                <Image Source="{Binding Image}"/>
+            </Button>
+        </DataTemplate>
+    </Window.Resources>
+
+
+
+    <Grid DataContext="{StaticResource gvm}" Background="#953423">
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="4*"/>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <!-- Главные спички-->
+        <Label Background="#781160" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Content="Свободные спички" FontSize="14" FontWeight="Bold"/>
+        <ItemsControl ItemTemplate="{DynamicResource OneButton}" ItemsSource="{Binding F}" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="1" Grid.Row="0">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal"></StackPanel>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+        </ItemsControl>
+
+        <!-- Cпички первого игрока-->
+        <Label Background="#781160" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Content="Спички первого игрока" FontSize="14" FontWeight="Bold"/>
+        <ItemsControl ItemTemplate="{DynamicResource OneButtonNc}" ItemsSource="{Binding F2}" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="1" Grid.Row="1">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal"></StackPanel>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+        </ItemsControl>
+
+        <!-- Спички второго игрока-->
+        <Label Background="#781160" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Content="Спички второго игрока" FontSize="14" FontWeight="Bold"/>
+        <ItemsControl ItemTemplate="{DynamicResource OneButtonNc}" ItemsSource="{Binding F1}" HorizontalAlignment="Center"  VerticalAlignment="Center" Grid.Column="1" Grid.Row="2">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal"></StackPanel>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+        </ItemsControl>
+
+        <Label Grid.Row="0" Grid.Column="2" Background="#781160" HorizontalAlignment="Center" VerticalAlignment="Center" Content="{Binding Path=Step}" ContentStringFormat="Ходит {0} игрок" FontSize="14" FontWeight="Bold" />
+        <Label Grid.Row="1" Grid.Column="2" Background="#781160" HorizontalAlignment="Center" VerticalAlignment="Center" Content="{Binding Path=PickupCount}" ContentStringFormat="Вы взяли {0} спичек" FontWeight="Bold" FontSize="14" />
+        <Button Margin="35,19,0,94" Content="Подтвердить" Background="#683412" Command="{StaticResource ac}" CommandParameter="{StaticResource gvm}" Grid.Column="2" Grid.Row="2" FontSize="14" FontWeight="Bold" HorizontalAlignment="Left" Width="110" Height="40" RenderTransformOrigin="0.504,0.553"/>
+        <Button Margin="36,90,0,30" Command="{StaticResource res}" CommandParameter="{StaticResource gvm}" Grid.Column="2" Content="Сброс" Background="#683412" HorizontalAlignment="Left" Grid.Row="2" Width="110" Height="40" FontWeight="Bold" FontSize="14" RenderTransformOrigin="0.514,0.575" IsCancel="True"/>
+        <Button Command="{StaticResource rul}" CommandParameter="{StaticResource gvm}" Background="#683412" Grid.Column="2" Content="Правила" HorizontalAlignment="Left" Margin="35,115,0,0" Grid.Row="1" VerticalAlignment="Top" Height="40" Width="110" FontSize="14" FontWeight="Bold"/>
+        <Button Command="{StaticResource sav}" CommandParameter="{StaticResource gvm}" Content="Сохранить" Margin="95,119,0,0" Grid.Row="2" VerticalAlignment="Top" HorizontalAlignment="Left" Width="62" Background="#683412"/>
+        <Button Command="{StaticResource dow}" CommandParameter="{StaticResource gvm}" Content="Загрузить" HorizontalAlignment="Right" Margin="0,119,95,0" Grid.Row="2" VerticalAlignment="Top" Width="62" Background="#683412"/>
+    </Grid>
+</Window>
