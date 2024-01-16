@@ -2,7 +2,7 @@
 using System.Windows.Input;
 
 namespace MatchGame.Commands.Base
-{
+{   //настраиваемые методы доступа к событиям
     public abstract class Command : ICommand
     {
         public event EventHandler CanExecuteChanged
